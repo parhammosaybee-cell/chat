@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PM Chat</title>
+<style>
+:root{--blue:#1684f8;--dark:#102d49;--line:#e4edf7;--pale:#e9f4ff;--text:#142f4d;--muted:#7790aa}
+*{box-sizing:border-box}body{margin:0;font-family:Tahoma,Arial,sans-serif;background:#eaf2fa;color:var(--text)}
+.app{height:100vh;min-height:650px;display:grid;grid-template-columns:94px 300px minmax(360px,1fr) 280px;max-width:1600px;margin:auto;background:#fff;overflow:hidden;box-shadow:0 10px 45px #173e6414}
+nav{background:linear-gradient(180deg,#123b61,#102b46);color:#d9eaff;display:flex;flex-direction:column;align-items:stretch;padding:14px 8px;gap:7px}
+.brand{width:56px;height:56px;border-radius:50%;display:grid;place-items:center;background:#087cf6;color:white;font-weight:800;font-size:23px;margin:0 auto 16px}
+.navitem{border:0;background:transparent;color:inherit;border-radius:12px;padding:12px 2px;font:12px Tahoma;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:7px}
+.navitem .ico{font-size:22px}.navitem.active,.navitem:hover{background:#167ee8;color:white}.me{margin-top:auto;text-align:center;font-size:11px;padding:12px 0}.me .avatar{margin:auto}
+.left{border-left:1px solid var(--line);display:flex;flex-direction:column;min-width:0}
+.search{padding:17px 14px;border-bottom:1px solid var(--line)}input,button{font-family:inherit}.search input{width:100%;border:0;border-radius:22px;padding:13px 15px;background:#f1f6fb;outline:none}
+.section{padding:14px 15px 8px;font-size:14px;font-weight:bold;display:flex;justify-content:space-between}
+.stories{display:flex;gap:12px;padding:7px 14px 16px;overflow:auto;border-bottom:1px solid var(--line)}
+.story{min-width:54px;text-align:center;font-size:11px}.ring{width:52px;height:52px;border-radius:50%;padding:3px;border:2px solid #1684f8;margin:0 auto 5px}.ring .avatar{width:100%;height:100%;font-size:16px}
+.avatar{width:43px;height:43px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#d3e9ff,#a4d0ff);color:#1268be;font-weight:bold;flex-shrink:0;overflow:hidden}
+.avatar.photo{background:linear-gradient(135deg,#e8c9b8,#a0b8ce);color:#173b5e}
+.chats{overflow:auto}.person{display:flex;align-items:center;gap:10px;padding:11px 12px;cursor:pointer;border-radius:12px;margin:2px 7px}.person.active,.person:hover{background:#dceeff}.person .details{flex:1;min-width:0}.person b{font-size:13px}.person p{font-size:12px;color:var(--muted);margin:6px 0 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.time{font-size:11px;color:#3b8eea;align-self:flex-start}.badge{display:inline-grid;place-items:center;background:#1684f8;color:#fff;border-radius:50%;width:20px;height:20px;font-size:11px;margin-top:7px}
+.chat{display:flex;flex-direction:column;min-width:0;background:#f5faff}.chathead{height:78px;display:flex;align-items:center;gap:12px;padding:13px 18px;background:#fff;border-bottom:1px solid var(--line)}.chathead b{font-size:15px}.chathead small{display:block;color:#1684f8;margin-top:5px}.tools{margin-right:auto;display:flex;gap:8px}.tool{width:36px;height:36px;border:0;border-radius:50%;background:#f0f7ff;color:#087cf6;font-size:19px;cursor:pointer}
+.messages{flex:1;overflow:auto;padding:24px;display:flex;flex-direction:column;gap:13px;background-color:#eaf5ff;background-image:radial-gradient(#d0e6fa 1px,transparent 1px);background-size:18px 18px}
+.day{align-self:center;background:#bcd9f3;color:#315d83;border-radius:20px;padding:7px 16px;font-size:11px;margin-bottom:7px}
+.msg{max-width:75%;padding:11px 14px;border-radius:17px;background:#fff;box-shadow:0 2px 5px #1b4a7110;font-size:13px;line-height:1.9;overflow-wrap:anywhere}.msg.mine{align-self:flex-start;background:#c9e5ff;border-radius:17px 17px 17px 5px}.msg .stamp{display:block;text-align:left;color:#6c94ba;font-size:10px;margin-top:4px}
+.voice{display:flex;align-items:center;gap:12px;min-width:260px}.play{width:42px;height:42px;border:0;border-radius:50%;background:#1684f8;color:#fff;font-size:20px;cursor:pointer}.wave{height:24px;flex:1;background:repeating-linear-gradient(90deg,#1684f8 0 3px,transparent 3px 7px);mask-image:linear-gradient(0deg,#000 0 100%);opacity:.8}
+.composer{display:flex;align-items:center;gap:10px;padding:13px;background:#fff;margin:0 15px 14px;border-radius:16px;box-shadow:0 2px 12px #2e669013}.composer input{flex:1;min-width:0;border:0;outline:0;font-size:13px}.send{border:0;background:#1684f8;color:#fff;border-radius:50%;width:43px;height:43px;font-size:19px;cursor:pointer}.attach{border:0;background:transparent;color:#1684f8;font-size:22px;cursor:pointer}
+.profile{border-right:1px solid var(--line);padding:18px 16px;overflow:auto;background:#fff}.profiletop{display:flex;align-items:center;justify-content:space-between;font-weight:bold;margin-bottom:30px}.bigavatar{width:112px;height:112px;border-radius:50%;margin:0 auto 12px;background:linear-gradient(135deg,#f0c5ad,#829bb3);display:grid;place-items:center;font-size:34px;color:#173b5e;font-weight:bold}.name{text-align:center;font-weight:bold;font-size:20px}.online{text-align:center;color:#1684f8;font-size:12px;margin-top:8px}.quick{display:flex;justify-content:space-around;margin:23px 0;border-bottom:1px solid var(--line);padding-bottom:20px}.quick button{border:0;background:#e8f4ff;color:#1684f8;width:43px;height:43px;border-radius:50%;font-size:18px}.quick small{display:block;text-align:center;font-size:11px;margin-top:7px}.about{font-size:13px;line-height:1.8;border-bottom:1px solid var(--line);padding-bottom:17px}.about small{display:block;color:#1684f8;margin-top:7px}.row{display:flex;align-items:center;gap:10px;padding:13px 0;border-bottom:1px solid #edf2f7;font-size:13px}.row span{margin-right:auto;color:var(--muted);font-size:11px}
+@media(max-width:1150px){.app{grid-template-columns:72px 260px minmax(320px,1fr)}.profile{display:none}}
+@media(max-width:720px){.app{grid-template-columns:1fr;min-height:100vh;height:100dvh}.left,nav,.profile{display:none}.chathead{height:66px}.messages{padding:14px}.msg{max-width:88%}.composer{margin:0 8px 8px}.voice{min-width:200px}}
+</style></head>
+<body>
+<div class="app">
+<nav>
+<div class="brand">PM</div>
+<button class="navitem active"><span class="ico">▢</span>چت‌ها</button>
+<button class="navitem"><span class="ico">◉</span>استوری‌ها</button>
+<button class="navitem"><span class="ico">♧</span>گروه‌ها</button>
+<button class="navitem"><span class="ico">⚑</span>کانال‌ها</button>
+<button class="navitem"><span class="ico">☎</span>تماس‌ها</button>
+<button class="navitem" onclick="alert('تنظیمات نمایشی است')"><span class="ico">⚙</span>تنظیمات</button>
+<div class="me"><div class="avatar photo">P</div><p>Parham</p><span style="color:#54d7a4">● آنلاین</span></div>
+</nav>
+<aside class="left">
+<div class="search"><input id="search" placeholder="جست‌وجو در چت‌ها و کاربران..." oninput="filterChats()"></div>
+<div class="section">استوری‌ها <span>⌄</span></div>
+<div class="stories">
+<div class="story"><div class="ring"><div class="avatar">＋</div></div>افزودن</div>
+<div class="story"><div class="ring"><div class="avatar photo">S</div></div>Sara</div>
+<div class="story"><div class="ring"><div class="avatar photo">A</div></div>Ali</div>
+<div class="story"><div class="ring"><div class="avatar photo">R</div></div>Reza</div>
+<div class="story"><div class="ring"><div class="avatar photo">N</div></div>Nika</div>
+</div>
+<div class="section">همهٔ چت‌ها <span>⌄</span></div>
+<div class="chats" id="chats">
+<div class="person active" data-name="Sara" onclick="switchChat('Sara')"><div class="avatar photo">S</div><div class="details"><b>Sara</b><p>عالیه، حتماً 😊</p></div><div class="time">14:32<div class="badge">3</div></div></div>
+<div class="person" data-name="Ali" onclick="switchChat('Ali')"><div class="avatar photo">A</div><div class="details"><b>Ali</b><p>عکس</p></div><div class="time">14:20<div class="badge">1</div></div></div>
+<div class="person" data-name="Reza" onclick="switchChat('Reza')"><div class="avatar photo">R</div><div class="details"><b>Reza</b><p>برو ببین چی میشه</p></div><div class="time">13:45<div class="badge">2</div></div></div>
+<div class="person" data-name="Nika" onclick="switchChat('Nika')"><div class="avatar photo">N</div><div class="details"><b>Nika</b><p>چطوری؟</p></div><div class="time">12:30</div></div>
+<div class="person" data-name="PM Chat گروه" onclick="switchChat('PM Chat گروه')"><div class="avatar">👥</div><div class="details"><b>گروه PM Chat</b><p>Ali: سلام به همه 👋</p></div><div class="time">11:12</div></div>
+<div class="person" data-name="کانال اخبار" onclick="switchChat('کانال اخبار')"><div class="avatar">📣</div><div class="details"><b>کانال اخبار</b><p>به PM Chat خوش آمدید!</p></div><div class="time">دیروز</div></div>
+</div>
+</aside>
+<main class="chat">
+<header class="chathead"><div class="avatar photo" id="headAvatar">S</div><div><b id="headName">Sara</b><small>آنلاین ●</small></div><div class="tools"><button class="tool" title="تماس">☎</button><button class="tool" title="ویدیو">▣</button><button class="tool" title="جست‌وجو">⌕</button><button class="tool" title="بیشتر">⋮</button></div></header>
+<section class="messages" id="messages">
+<div class="day">امروز</div>
+<div class="msg">سلام پارهم! خوبی؟<span class="stamp">14:20</span></div>
+<div class="msg mine">سلام، خوبم ممنون. تو چطوری؟<span class="stamp">14:21 ✓✓</span></div>
+<div class="msg">😊 خوبم<br>امروز چه برنامه‌ای داری؟<span class="stamp">14:22</span></div>
+<div class="msg mine">دارم روی پروژه کار می‌کنم.<br>بعداً با هم صحبت می‌کنیم.<span class="stamp">14:25 ✓✓</span></div>
+<div class="msg">حتماً! موفق باشی 💪<span class="stamp">14:26</span></div>
+<div class="msg mine"><div class="voice"><button class="play" onclick="alert('پخش ویس در این نمونه فعال نیست')">▶</button><div class="wave"></div><small>0:12</small></div><span class="stamp">14:28 ✓✓</span></div>
+<div class="msg">عالیه، حتماً 😊<span class="stamp">14:32</span></div>
+</section>
+<form class="composer" id="form"><button type="button" class="attach" onclick="alert('پیوست فایل در این نمونه نمایشی است')">＋</button><input id="message" placeholder="پیام خود را بنویسید..." autocomplete="off"><button type="button" class="attach" onclick="alert('ضبط ویس هنوز به سرور وصل نیست')">♩</button><button class="send" type="submit">➤</button></form>
+</main>
+<aside class="profile"><div class="profiletop"><span>اطلاعات تماس</span><button class="tool" onclick="alert('پنل اطلاعات تماس')">×</button></div><div class="bigavatar">S</div><div class="name" id="profileName">Sara ✓</div><div class="online">آنلاین</div><div class="quick"><div><button>☎</button><small>تماس</small></div><div><button>▣</button><small>ویدیو</small></div><div><button>♧</button><small>بی‌صدا</small></div><div><button>•••</button><small>بیشتر</small></div></div><div class="about"><b>درباره</b><p>زندگی زیباست، فقط باید متفاوت نگاه کنی 🌸</p><small>@sara_pmchat</small></div><div class="row">▧　رسانه‌ها <span>234　›</span></div><div class="row">▤　فایل‌ها <span>12　›</span></div><div class="row">♧　لینک‌ها <span>8　›</span></div><div class="row">♙　مشترکین <span>5　›</span></div><div class="section">تنظیمات</div><div class="row">♧　اعلان‌ها <span>›</span></div><div class="row">☏　تنظیمات چت <span>›</span></div><div class="row">◎　زبان <span>فارسی　›</span></div><div class="row">♢　حریم خصوصی و امنیت <span>›</span></div></aside>
+</div>
+<script>
+const form=document.getElementById('form'),input=document.getElementById('message'),messages=document.getElementById('messages');
+form.addEventListener('submit',e=>{e.preventDefault();const v=input.value.trim();if(!v)return;const m=document.createElement('div');m.className='msg mine';m.textContent=v;const s=document.createElement('span');s.className='stamp';s.textContent=new Date().toLocaleTimeString('fa-IR',{hour:'2-digit',minute:'2-digit'})+' ✓✓';m.appendChild(s);messages.appendChild(m);input.value='';messages.scrollTop=messages.scrollHeight;});
+function filterChats(){let q=document.getElementById('search').value.toLowerCase();document.querySelectorAll('.person').forEach(p=>p.style.display=p.dataset.name.toLowerCase().includes(q)?'flex':'none');}
+function switchChat(name){document.getElementById('headName').textContent=name;document.getElementById('profileName').textContent=name;document.querySelectorAll('.person').forEach(p=>p.classList.toggle('active',p.dataset.name===name));document.getElementById('messages').innerHTML='<div class="day">امروز</div><div class="msg">به گفت‌وگوی '+name+' خوش آمدید.<span class="stamp">همین حالا</span></div>';document.getElementById('headAvatar').textContent=name.charAt(0);}
+</script>
+</body></html>
